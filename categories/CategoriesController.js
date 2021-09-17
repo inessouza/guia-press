@@ -47,7 +47,7 @@ router.post("/categories/delete", (req, res) => {
 })
 
 router.get("/admin/categories/edit/:id", (req, res) => {
-    var id = req.params.id;
+    var id = req.params.id
     if (isNaN(id)) {
         res.redirect("/admin/categories")
     }
@@ -58,6 +58,18 @@ router.get("/admin/categories/edit/:id", (req, res) => {
             res.redirect("/admin/categories")
         }
     }).catch(erro => {
+        res.redirect("/admin/categories")
+    })
+})
+
+router.post("/categories/update", (req, res) => {
+    var id = req.body.id
+    var title = req.body.title
+    Category.update({title: title, slug: slugify(title)}, {
+        where: {
+            id: id
+        }
+    }).then(() => {
         res.redirect("/admin/categories")
     })
 })
